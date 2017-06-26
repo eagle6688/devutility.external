@@ -1,4 +1,4 @@
-package devutility.external.test.packages.commonslang;
+package devutility.external.packages.commonslang;
 
 import org.apache.commons.lang3.StringUtils;
 
