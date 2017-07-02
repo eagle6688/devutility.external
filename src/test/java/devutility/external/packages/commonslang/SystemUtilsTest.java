@@ -8,7 +8,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestSystemUtils {
+public class SystemUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {

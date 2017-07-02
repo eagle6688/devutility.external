@@ -10,7 +10,11 @@ public class DateTimeAppender extends AppenderSkeleton {
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
+		if (this.closed) {
+			return;
+		}
 
+		this.closed = true;
 	}
 
 	@Override
