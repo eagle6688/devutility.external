@@ -7,7 +7,6 @@ public class DateTimeAppenderTest {
 	public static Logger logger = Logger.getLogger(DateTimeAppenderTest.class);
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		logger.debug("debug log output!");
 		logger.error("error log output!");
 	}

@@ -9,7 +9,6 @@ public class DateTimeAppender extends AppenderSkeleton {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
 		if (this.closed) {
 			return;
 		}
@@ -19,13 +18,11 @@ public class DateTimeAppender extends AppenderSkeleton {
 
 	@Override
 	public boolean requiresLayout() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	protected void append(LoggingEvent event) {
-		// TODO Auto-generated method stub
 		if (this.layout == null) {
 			String message = String.format("Missing layout %s.", name);
 			errorHandler.error(message, null, ErrorCode.MISSING_LAYOUT);
