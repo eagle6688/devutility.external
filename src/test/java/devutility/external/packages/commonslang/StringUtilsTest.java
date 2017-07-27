@@ -8,5 +8,13 @@ public class StringUtilsTest {
 		String[] array = { "1", "2" };
 		String str = StringUtils.join(array, ",");
 		System.out.println(str);
+
+		if (StringUtils.isNumeric("asd")) {
+			System.out.println("asd is numeric.");
+		}
+		
+		if (StringUtils.isNumeric("123")) {
+			System.out.println("123 is numeric.");
+		}
 	}
 }
