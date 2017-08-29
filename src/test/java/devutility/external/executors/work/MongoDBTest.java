@@ -1,6 +1,6 @@
-package devutility.external.executors.database.mongodb;
+package devutility.external.executors.work;
 
-import devutility.external.service.database.mongodb.GetProductsService;
+import devutility.external.service.work.GetProductsService;
 import devutility.internal.test.ServiceExecutor;
 
 public class MongoDBTest {
