@@ -49,6 +49,4 @@ public class GetProductsService extends BaseService {
 			e.printStackTrace();
 		}
 	}
-	
-	
 }
