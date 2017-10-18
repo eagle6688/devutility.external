@@ -8,7 +8,11 @@ public class LogService extends BaseService {
 	@Override
 	public void run() {
 		Logger logger = Logger.getLogger(LogService.class);
+		logger.trace("trace log output!");
 		logger.debug("debug log output!");
+		logger.info("info log output!");
+		logger.warn("warn log output!");
 		logger.error("error log output!");
+		logger.fatal("fatal log output!");
 	}
 }
