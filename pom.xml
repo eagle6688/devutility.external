@@ -43,6 +43,13 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.9.0</version>
 		</dependency>
+		<dependency>
+			<groupId>devutility.internal</groupId>
+			<artifactId>devutility.internal</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/lib/devutility.internal.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
