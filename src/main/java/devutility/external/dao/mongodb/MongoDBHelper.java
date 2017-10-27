@@ -3,8 +3,10 @@ package devutility.external.dao.mongodb;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bson.Document;
 
 import com.mongodb.MongoCredential;
@@ -116,4 +118,41 @@ public class MongoDBHelper {
 	}
 
 	// endregion
+
+	// region to document
+
+	public static Document toDocument(Object obj, Field[] fields, Method[] methods, String[] excludeFields) {
+		if (obj == null || fields == null || fields.length == 0 || methods == null || methods.length == 0) {
+			return null;
+		}
+
+		Document document = new Document();
+		ArrayList<String> targetFields = getTargetFields(fields, excludeFields);
+
+		for (String targetField : targetFields) {
+			for (Method method : methods) {
+				if (BeanHelper.isGetter(method, targetField)) {
+
+				}
+			}
+		}
+
+		return null;
+	}
+
+	// endregion
+
+	private static ArrayList<String> getTargetFields(Field[] fields, String[] excludeFields) {
+		ArrayList<String> targetFields = new ArrayList<>();
+
+		Arrays.stream(fields).forEach(i -> {
+			String fieldName = i.getName();
+
+			if (!ArrayUtils.contains(excludeFields, fieldName)) {
+				targetFields.add(fieldName);
+			}
+		});
+
+		return targetFields;
+	}
 }
