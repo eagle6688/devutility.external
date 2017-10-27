@@ -20,8 +20,7 @@ public class MongoDBHelper {
 	// region create MongoCredential
 
 	public static MongoCredential createMongoCredential(DBInstance dbInstance) {
-		return MongoCredential.createCredential(dbInstance.getLoginName(), dbInstance.getDatabase(),
-				dbInstance.getPassword().toCharArray());
+		return MongoCredential.createCredential(dbInstance.getLoginName(), dbInstance.getDatabase(), dbInstance.getPassword().toCharArray());
 	}
 
 	// endregion
@@ -121,35 +120,63 @@ public class MongoDBHelper {
 
 	// region to document
 
-	public static Document toDocument(Object obj, Field[] fields, Method[] methods, String[] excludeFields) {
+	public static Document toDocument(Object obj, String[] excludeFields) throws Exception {
+		Class<?> clazz = obj.getClass();
+		Field[] fields = clazz.getFields();
+		Method[] methods = clazz.getMethods();
+		return toDocument(obj, fields, methods, excludeFields);
+	}
+
+	public static Document toDocument(Object obj, Field[] fields, Method[] methods, String[] excludeFields) throws Exception {
 		if (obj == null || fields == null || fields.length == 0 || methods == null || methods.length == 0) {
 			return null;
 		}
 
 		Document document = new Document();
-		ArrayList<String> targetFields = getTargetFields(fields, excludeFields);
+		ArrayList<Field> targetFields = getTargetFields(fields, excludeFields);
 
-		for (String targetField : targetFields) {
+		for (Field targetField : targetFields) {
+			Object value = null;
+			String fieldName = targetField.getName();
+
 			for (Method method : methods) {
-				if (BeanHelper.isGetter(method, targetField)) {
+				if (!BeanHelper.isGetter(method, fieldName)) {
+					continue;
+				}
+
+				value = method.invoke(obj);
+
+				if (value == null) {
+					document.append(fieldName, value);
+					continue;
+				}
+
+				if (value instanceof ArrayList) {
+					Class<?> clazz = GenericTypeHelper.getListClassByField(targetField);
+
+					if (clazz == null) {
+						continue;
+					}
 
 				}
+
+				document.append(fieldName, value);
 			}
 		}
 
-		return null;
+		return document;
 	}
 
 	// endregion
 
-	private static ArrayList<String> getTargetFields(Field[] fields, String[] excludeFields) {
-		ArrayList<String> targetFields = new ArrayList<>();
+	private static ArrayList<Field> getTargetFields(Field[] fields, String[] excludeFields) {
+		ArrayList<Field> targetFields = new ArrayList<>();
 
 		Arrays.stream(fields).forEach(i -> {
 			String fieldName = i.getName();
 
 			if (!ArrayUtils.contains(excludeFields, fieldName)) {
-				targetFields.add(fieldName);
+				targetFields.add(i);
 			}
 		});
 
