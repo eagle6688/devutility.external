@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import devutility.internal.io.DirectoryHelper;
 import devutility.internal.system.Application;
 import devutility.internal.test.BaseService;
+import devutility.internal.test.ServiceExecutor;
 import redis.clients.jedis.Jedis;
 
 public class JedisUsageService extends BaseService {
@@ -41,5 +42,9 @@ public class JedisUsageService extends BaseService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static void main(String[] args) {
+		ServiceExecutor.run(new JedisUsageService());
 	}
 }

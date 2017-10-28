@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import devutility.internal.test.models.Person;
 import devutility.internal.test.BaseService;
+import devutility.internal.test.ServiceExecutor;
 
 public class JacksonService extends BaseService {
 	@Override
@@ -47,5 +48,9 @@ public class JacksonService extends BaseService {
 	private <T> T deSerialize(String value, Class<T> cl) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(value, cl);
+	}
+	
+	public static void main(String[] args) {
+		ServiceExecutor.run(new JacksonService());
 	}
 }
