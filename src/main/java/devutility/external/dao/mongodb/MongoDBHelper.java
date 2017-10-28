@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bson.Document;
 
+import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
@@ -20,6 +21,10 @@ public class MongoDBHelper {
 	// region create MongoCredential
 
 	public static MongoCredential createMongoCredential(DBInstance dbInstance) {
+		if (dbInstance.getLoginName() == null) {
+			return null;
+		}
+
 		return MongoCredential.createCredential(dbInstance.getLoginName(), dbInstance.getDatabase(), dbInstance.getPassword().toCharArray());
 	}
 
@@ -29,6 +34,22 @@ public class MongoDBHelper {
 
 	public static ServerAddress createServerAddress(DBInstance dbInstance) {
 		return new ServerAddress(dbInstance.getHost(), dbInstance.getPort());
+	}
+
+	// endregion
+
+	// region create MongoClient
+
+	public static MongoClient createMongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
+		if (serverAddress == null) {
+			return null;
+		}
+
+		if (mongoCredential == null) {
+			return new MongoClient(serverAddress);
+		}
+
+		return new MongoClient(serverAddress, Arrays.asList(mongoCredential));
 	}
 
 	// endregion
