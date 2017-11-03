@@ -60,7 +60,7 @@ public class DateTimeAppender extends AppenderSkeleton {
 
 	private void appendContent(String content) throws Exception {
 		LocalDateTime dateTime = LocalDateTime.now();
-		String rootDir = DirectoryHelper.getAbsolutePath(logDirectory);
+		String rootDir = DirectoryHelper.toAbsolutePath(logDirectory);
 		String logDir = DirectoryHelper.getDateDirectory(dateTime, rootDir);
 		Path logFile = Paths.get(logDir, FileHelper.getHourLogFileName(dateTime.getHour()));
 
