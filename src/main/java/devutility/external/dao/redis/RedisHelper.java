@@ -1,6 +1,9 @@
 package devutility.external.dao.redis;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import devutility.external.data.codec.ObjectCompressHelper;
 import devutility.internal.dao.RedisInstance;
@@ -9,6 +12,7 @@ import redis.clients.jedis.Jedis;
 
 public class RedisHelper {
 	private RedisInstance redisInstance;
+	private int dbIndex;
 	private int pageSize;
 
 	// region constructor
@@ -155,6 +159,21 @@ public class RedisHelper {
 		return objectGet(key, String[][].class);
 	}
 
+	public List<String[]> pagingGetList(String originalKey) throws IOException {
+		List<String[]> list = new ArrayList<>();
+		int pagesCount = pagingGetCount(originalKey);
+
+		if (pagesCount == 0) {
+			return Arrays.asList(objectGet(originalKey, String[][].class));
+		}
+
+		for (int index = 0; index < pagesCount; index++) {
+			list.addAll(Arrays.asList(pagingGetArray(originalKey, index)));
+		}
+
+		return list;
+	}
+
 	public boolean pagingSetCount(String originalKey, int count) {
 		if (StringHelper.isNullOrEmpty(originalKey) || count < 1) {
 			return false;
@@ -173,6 +192,14 @@ public class RedisHelper {
 	// endregion
 
 	// region other
+
+	public int getDbIndex() {
+		return dbIndex;
+	}
+
+	public void setDbIndex(int dbIndex) {
+		this.dbIndex = dbIndex;
+	}
 
 	public int getPageSize() {
 		return pageSize;
