@@ -5,7 +5,8 @@
 	<version>1.0</version>
 	<packaging>jar</packaging>
 	<name>devutility.external</name>
-	<url>http://maven.apache.org</url>
+	<description>Developer Utility Library</description>
+	<url>https://github.com/eagle6688/devutility.external</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -70,4 +71,23 @@
 			</plugin>
 		</plugins>
 	</build>
+	<developers>
+		<developer>
+			<name>Aldwin Su</name>
+			<email>fangyansu@163.com</email>
+			<organization>PKU</organization>
+			<organizationUrl></organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:https://github.com/eagle6688/devutility.external.git</connection>
+		<developerConnection>scm:git:https://github.com/eagle6688/devutility.external.git</developerConnection>
+		<url>https://github.com/eagle6688/devutility.external</url>
+	</scm>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 </project>
