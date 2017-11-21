@@ -11,6 +11,6 @@ import devutility.internal.text.format.DateFormatHelper;
 public class DateJsonSerializer extends JsonSerializer<Date> {
 	@Override
 	public void serialize(Date value, JsonGenerator gen, SerializerProvider serializers) {
-		JsonSerializerHelper.<Date>serialize(value, gen, DateFormatHelper.StandardDate_SimpleDateFormat);
+		JsonSerializerHelper.<Date>serialize(value, gen, DateFormatHelper.getSimpleDateFormatWithStandardDateFormat());
 	}
 }
