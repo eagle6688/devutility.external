@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.devutility</groupId>
 	<artifactId>devutility.external</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	<name>devutility.external</name>
 	<url>http://maven.apache.org</url>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>com.devutility</groupId>
 			<artifactId>devutility.internal</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
