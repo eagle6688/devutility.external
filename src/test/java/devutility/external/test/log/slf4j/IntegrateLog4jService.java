@@ -1,4 +1,4 @@
-package devutility.external.test.service.log.slf4j;
+package devutility.external.test.log.slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

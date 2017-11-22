@@ -1,6 +1,5 @@
-package devutility.external.test.service.cache.redis;
+package devutility.external.test.cache.redis;
 
-import devutility.external.test.cache.redis.ProductCache;
 import devutility.internal.test.BaseService;
 import devutility.internal.test.ServiceExecutor;
 

@@ -1,4 +1,4 @@
-package devutility.external.test.service.log.log4j;
+package devutility.external.test.log.log4j;
 
 import org.apache.log4j.Logger;
 
