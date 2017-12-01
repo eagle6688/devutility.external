@@ -59,7 +59,7 @@ public class CookieHelper {
 		}
 
 		if (!StringHelper.isNullOrEmpty(path)) {
-			cookie.setPath(domain);
+			cookie.setPath(path);
 		}
 
 		cookie.setMaxAge(expireSeconds);
