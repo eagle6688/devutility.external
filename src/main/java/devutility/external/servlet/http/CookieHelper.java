@@ -64,6 +64,7 @@ public class CookieHelper {
 
 		cookie.setMaxAge(expireSeconds);
 		cookie.setSecure(secure);
+		cookie.setHttpOnly(true);
 		return cookie;
 	}
 
