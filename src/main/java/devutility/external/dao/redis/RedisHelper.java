@@ -12,7 +12,6 @@ import redis.clients.jedis.Jedis;
 
 public class RedisHelper {
 	private RedisInstance redisInstance;
-	private int dbIndex;
 	private int pageSize;
 
 	// region constructor
@@ -194,11 +193,11 @@ public class RedisHelper {
 	// region other
 
 	public int getDbIndex() {
-		return dbIndex;
+		return this.redisInstance.getDBIndex();
 	}
 
 	public void setDbIndex(int dbIndex) {
-		this.dbIndex = dbIndex;
+		this.redisInstance.setDBIndex(dbIndex);
 	}
 
 	public int getPageSize() {
