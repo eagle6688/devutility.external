@@ -63,9 +63,10 @@ public class CookieHelper {
 		}
 
 		if (!StringHelper.isNullOrEmpty(path)) {
-			cookie.setPath(path);
+			path = "/";
 		}
 
+		cookie.setPath(path);
 		cookie.setMaxAge(expireSeconds);
 		cookie.setSecure(secure);
 		cookie.setHttpOnly(true);
