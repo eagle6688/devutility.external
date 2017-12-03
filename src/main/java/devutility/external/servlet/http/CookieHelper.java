@@ -62,7 +62,7 @@ public class CookieHelper {
 			cookie.setDomain(domain);
 		}
 
-		if (!StringHelper.isNullOrEmpty(path)) {
+		if (StringHelper.isNullOrEmpty(path)) {
 			path = "/";
 		}
 
