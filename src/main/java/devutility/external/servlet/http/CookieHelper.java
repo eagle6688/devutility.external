@@ -43,6 +43,10 @@ public class CookieHelper {
 		set(httpServletResponse, cookie);
 	}
 
+	public static void set(HttpServletResponse httpServletResponse, String name, String value, int expireSeconds) {
+		set(httpServletResponse, name, value, null, null, expireSeconds);
+	}
+
 	// endregion
 
 	// region create cookie
