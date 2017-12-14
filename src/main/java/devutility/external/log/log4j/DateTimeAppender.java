@@ -11,9 +11,27 @@ import org.apache.log4j.spi.LoggingEvent;
 
 import devutility.internal.io.DirectoryHelper;
 import devutility.internal.io.FileHelper;
-import devutility.internal.io.RandomAccessFileHelper;
+import devutility.internal.io.TextFileHelper;
 
 public class DateTimeAppender extends AppenderSkeleton {
+	// region variables
+
+	private Priority currentPriority;
+
+	private String logDirectory;
+
+	public String getLogDirectory() {
+		return logDirectory;
+	}
+
+	public void setLogDirectory(String logDirectory) {
+		this.logDirectory = logDirectory;
+	}
+
+	// endregion
+
+	// region close
+
 	@Override
 	public void close() {
 		if (this.closed) {
@@ -23,10 +41,18 @@ public class DateTimeAppender extends AppenderSkeleton {
 		this.closed = true;
 	}
 
+	// endregion
+
+	// region requiresLayout
+
 	@Override
 	public boolean requiresLayout() {
 		return true;
 	}
+
+	// endregion
+
+	// region append
 
 	@Override
 	protected void append(LoggingEvent event) {
@@ -40,44 +66,55 @@ public class DateTimeAppender extends AppenderSkeleton {
 		System.out.println(content);
 
 		try {
-			appendContent(content);
+			record(content);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		currentPriority = null;
 	}
+
+	// endregion
+
+	// region isAsSevereAsThreshold
 
 	@Override
 	public boolean isAsSevereAsThreshold(Priority priority) {
-		/*Priority threshold = this.getThreshold();
-
-		if (threshold == null) {
-			return true;
-		}
-
-		return threshold.equals(priority);*/
+		// Priority threshold = this.getThreshold();
+		// if (threshold == null) { return true; }
+		// return threshold.equals(priority);
+		currentPriority = priority;
 		return true;
 	}
 
-	private void appendContent(String content) throws Exception {
+	// endregion
+
+	// region record
+
+	private void record(String content) throws Exception {
+		if (currentPriority == null) {
+			throw new Exception("Current priority null!");
+		}
+
 		LocalDateTime dateTime = LocalDateTime.now();
 		String rootDir = DirectoryHelper.toAbsolutePath(logDirectory);
 		String logDir = DirectoryHelper.getDateDirectory(dateTime, rootDir);
-		Path logFile = Paths.get(logDir, FileHelper.getHourLogFileName(dateTime.getHour()));
 
 		if (!DirectoryHelper.createIfNon(logDir)) {
-			throw new Exception(String.format("Can not create directory %s", logDir));
+			throw new Exception(String.format("Cannot create directory %s", logDir));
 		}
 
-		RandomAccessFileHelper.asyncAppend(logFile, content);
+		Path logFile = Paths.get(logDir, getLogFileName(dateTime));
+		TextFileHelper.asyncAppend(logFile, content);
 	}
 
-	private String logDirectory;
+	// endregion
 
-	public String getLogDirectory() {
-		return logDirectory;
+	// region get log file name
+
+	private String getLogFileName(LocalDateTime dateTime) {
+		return String.format("%s_%s", currentPriority.toString(), FileHelper.getHourLogFileName(dateTime.getHour()));
 	}
 
-	public void setLogDirectory(String logDirectory) {
-		this.logDirectory = logDirectory;
-	}
+	// endregion
 }
