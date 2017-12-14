@@ -1,9 +1,9 @@
 package devutility.external.test.cache.redis;
 
-import devutility.internal.test.BaseService;
-import devutility.internal.test.ServiceExecutor;
+import devutility.internal.test.BaseTest;
+import devutility.internal.test.TestExecutor;
 
-public class JedisUsageService extends BaseService {
+public class JedisUsageService extends BaseTest {
 	@Override
 	public void run() {
 		ProductCache productCache = new ProductCache();
@@ -14,6 +14,6 @@ public class JedisUsageService extends BaseService {
 	}
 
 	public static void main(String[] args) {
-		ServiceExecutor.run(new JedisUsageService());
+		TestExecutor.run(new JedisUsageService());
 	}
 }

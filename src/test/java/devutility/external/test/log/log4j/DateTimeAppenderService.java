@@ -2,10 +2,10 @@ package devutility.external.test.log.log4j;
 
 import org.apache.log4j.Logger;
 
-import devutility.internal.test.BaseService;
-import devutility.internal.test.ServiceExecutor;
+import devutility.internal.test.BaseTest;
+import devutility.internal.test.TestExecutor;
 
-public class DateTimeAppenderService extends BaseService {
+public class DateTimeAppenderService extends BaseTest {
 	@Override
 	public void run() {
 		Logger logger = Logger.getLogger(DateTimeAppenderService.class);
@@ -18,6 +18,6 @@ public class DateTimeAppenderService extends BaseService {
 	}
 	
 	public static void main(String[] args) {
-		ServiceExecutor.run(new DateTimeAppenderService());
+		TestExecutor.run(new DateTimeAppenderService());
 	}
 }

@@ -3,10 +3,10 @@ package devutility.external.test.log.slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import devutility.internal.test.BaseService;
-import devutility.internal.test.ServiceExecutor;
+import devutility.internal.test.BaseTest;
+import devutility.internal.test.TestExecutor;
 
-public class IntegrateLog4jService extends BaseService {
+public class IntegrateLog4jService extends BaseTest {
 	@Override
 	public void run() {
 		Logger logger = LoggerFactory.getLogger(IntegrateLog4jService.class);
@@ -15,6 +15,6 @@ public class IntegrateLog4jService extends BaseService {
 	}
 	
 	public static void main(String[] args) {
-		ServiceExecutor.run(new IntegrateLog4jService());
+		TestExecutor.run(new IntegrateLog4jService());
 	}
 }

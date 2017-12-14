@@ -6,10 +6,10 @@ import java.util.Date;
 import devutility.external.data.codec.ObjectCompressHelper;
 import devutility.external.data.json.JsonHelper;
 import devutility.external.test.model.User;
-import devutility.internal.test.BaseService;
-import devutility.internal.test.ServiceExecutor;
+import devutility.internal.test.BaseTest;
+import devutility.internal.test.TestExecutor;
 
-public class ObjectCompressHelperTest extends BaseService {
+public class ObjectCompressHelperTest extends BaseTest {
 	@Override
 	public void run() {
 		User user = new User();
@@ -30,6 +30,6 @@ public class ObjectCompressHelperTest extends BaseService {
 	}
 
 	public static void main(String[] args) {
-		ServiceExecutor.run(ObjectCompressHelperTest.class);
+		TestExecutor.run(ObjectCompressHelperTest.class);
 	}
 }

@@ -8,10 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import devutility.external.test.model.User;
-import devutility.internal.test.BaseService;
-import devutility.internal.test.ServiceExecutor;
+import devutility.internal.test.BaseTest;
+import devutility.internal.test.TestExecutor;
 
-public class SerializeTest extends BaseService {
+public class SerializeTest extends BaseTest {
 	@Override
 	public void run() {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -43,6 +43,6 @@ public class SerializeTest extends BaseService {
 	}
 
 	public static void main(String[] args) {
-		ServiceExecutor.run(SerializeTest.class);
+		TestExecutor.run(SerializeTest.class);
 	}
 }
