@@ -13,7 +13,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
-import devutility.internal.dao.DBInstance;
+import devutility.internal.dao.models.DBInstance;
 import devutility.internal.data.BeanHelper;
 import devutility.internal.lang.reflect.GenericTypeHelper;
 

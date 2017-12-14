@@ -1,7 +1,7 @@
 package devutility.external.test.config;
 
-import devutility.internal.dao.RedisInstance;
-import devutility.internal.dao.helper.RedisInstanceHelper;
+import devutility.internal.dao.RedisInstanceHelper;
+import devutility.internal.dao.models.RedisInstance;
 
 public class DBConfig {
 	public static final String CONFIG = "dbconfig.properties";

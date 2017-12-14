@@ -1,6 +1,6 @@
 package devutility.external.dao.redis;
 
-import devutility.internal.dao.RedisInstance;
+import devutility.internal.dao.models.RedisInstance;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;

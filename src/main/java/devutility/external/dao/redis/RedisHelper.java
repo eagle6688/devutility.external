@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import devutility.external.data.codec.ObjectCompressHelper;
-import devutility.internal.dao.RedisInstance;
+import devutility.internal.dao.models.RedisInstance;
 import devutility.internal.lang.StringHelper;
 import redis.clients.jedis.Jedis;
 
