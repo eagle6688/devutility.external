@@ -1,17 +1,11 @@
 package devutility.external.log.log4j;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Priority;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.LoggingEvent;
 
-import devutility.internal.io.DirectoryHelper;
-import devutility.internal.io.FileHelper;
-import devutility.internal.io.TextFileHelper;
+import devutility.internal.io.LogHelper;
 
 public class DateTimeAppender extends AppenderSkeleton {
 	// region variables
@@ -96,24 +90,8 @@ public class DateTimeAppender extends AppenderSkeleton {
 			throw new Exception("Current priority null!");
 		}
 
-		LocalDateTime dateTime = LocalDateTime.now();
-		String rootDir = DirectoryHelper.toAbsolutePath(logDirectory);
-		String logDir = DirectoryHelper.getDateDirectory(dateTime, rootDir);
-
-		if (!DirectoryHelper.createIfNon(logDir)) {
-			throw new Exception(String.format("Cannot create directory %s", logDir));
-		}
-
-		Path logFile = Paths.get(logDir, getLogFileName(dateTime));
-		TextFileHelper.asyncAppend(logFile, content);
-	}
-
-	// endregion
-
-	// region get log file name
-
-	private String getLogFileName(LocalDateTime dateTime) {
-		return String.format("%s_%s", currentPriority.toString(), FileHelper.getHourLogFileName(dateTime.getHour()));
+		String logFileNameFormat = String.format("%s_%s", currentPriority.toString(), "%s");
+		LogHelper.save(logFileNameFormat, content);
 	}
 
 	// endregion
