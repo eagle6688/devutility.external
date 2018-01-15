@@ -15,6 +15,7 @@ import com.mongodb.ServerAddress;
 
 import devutility.internal.dao.models.DBInstance;
 import devutility.internal.data.BeanHelper;
+import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.reflect.GenericTypeHelper;
 
 public class MongoDBHelper {
@@ -67,7 +68,7 @@ public class MongoDBHelper {
 			return null;
 		}
 
-		T model = cl.newInstance();
+		T model = ClassHelper.newInstance(cl);
 
 		for (Field field : fields) {
 			String fieldName = field.getName();
