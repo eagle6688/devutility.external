@@ -9,8 +9,8 @@
 	<url>https://github.com/eagle6688/devutility.external</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>9</maven.compiler.source>
+		<maven.compiler.target>9</maven.compiler.target>
 		<springVersion>5.0.2.RELEASE</springVersion>
 	</properties>
 	<dependencies>
