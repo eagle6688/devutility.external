@@ -11,6 +11,10 @@ import devutility.external.test.model.User;
 import devutility.internal.test.BaseTest;
 import devutility.internal.test.TestExecutor;
 
+/**
+ * @Description: SerializeTest
+ * @author: Aldwin
+ */
 public class SerializeTest extends BaseTest {
 	@Override
 	public void run() {
@@ -24,7 +28,7 @@ public class SerializeTest extends BaseTest {
 
 		List<String> list = new ArrayList<>();
 		list.add("1");
-		String[] array = list.stream().filter(i -> i.equals("2")).collect(Collectors.toList()).toArray(new String[0]);
+		String[] array = list.stream().filter(i -> "2".equals(i)).collect(Collectors.toList()).toArray(new String[0]);
 
 		try {
 			println(objectMapper.writeValueAsString(array));
@@ -34,7 +38,7 @@ public class SerializeTest extends BaseTest {
 
 		User user = new User();
 		user.setCountries(new String[0]);
-		
+
 		try {
 			println(objectMapper.writeValueAsString(user));
 		} catch (JsonProcessingException e) {

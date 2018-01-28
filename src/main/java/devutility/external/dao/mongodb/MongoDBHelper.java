@@ -13,7 +13,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
-import devutility.internal.dao.models.DBInstance;
+import devutility.internal.dao.models.DbInstance;
 import devutility.internal.data.BeanHelper;
 import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.reflect.GenericTypeHelper;
@@ -21,7 +21,7 @@ import devutility.internal.lang.reflect.GenericTypeHelper;
 public class MongoDBHelper {
 	// region create MongoCredential
 
-	public static MongoCredential createMongoCredential(DBInstance dbInstance) {
+	public static MongoCredential createMongoCredential(DbInstance dbInstance) {
 		if (dbInstance.getLoginName() == null) {
 			return null;
 		}
@@ -33,7 +33,7 @@ public class MongoDBHelper {
 
 	// region create ServerAddress
 
-	public static ServerAddress createServerAddress(DBInstance dbInstance) {
+	public static ServerAddress createServerAddress(DbInstance dbInstance) {
 		return new ServerAddress(dbInstance.getHost(), dbInstance.getPort());
 	}
 
