@@ -10,6 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import devutility.internal.base.SingletonFactory;
 import devutility.internal.cache.MemoryCache;
 
+/**
+ * @Description: MybatisHelper
+ * @author: Aldwin
+ */
 public class MybatisHelper {
 	// region variables
 
