@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.bson.Document;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.index.Index;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
@@ -60,6 +63,33 @@ public class MongoDBHelper {
 	}
 
 	// endregion
+
+	/**
+	 * createIndex @param field @return Index @throws
+	 */
+	private static Index createIndex(String field) {
+		return createIndex(field, false);
+	}
+
+	/**
+	 * createIndex @param field @param uniqued @return Index @throws
+	 */
+	private static Index createIndex(String field, boolean uniqued) {
+		Index index = new Index().on(field, Direction.ASC);
+
+		if (uniqued) {
+			return index.unique();
+		}
+
+		return index;
+	}
+
+	/**
+	 * createIndex @param mongoOperations @param clazz @param field void @throws
+	 */
+	public static <T> void createIndex(MongoOperations mongoOperations, Class<T> clazz, String field) {
+		mongoOperations.indexOps(clazz).ensureIndex(createIndex(field));
+	}
 
 	// region to bean
 
