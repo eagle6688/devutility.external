@@ -18,6 +18,12 @@ import devutility.internal.data.BeanHelper;
 import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.reflect.GenericTypeHelper;
 
+/**
+ * MongoDBHelper
+ * 
+ * @author: Aldwin
+ * @date: 2018-1-31 AM4:55:04
+ */
 public class MongoDBHelper {
 	// region create MongoCredential
 
