@@ -50,6 +50,31 @@ public class MongoDBHelper {
 
 	// region create MongoClient
 
+	/**
+	 * 
+	 * createMongoClient
+	 * @param dbInstance
+	 * @return MongoClient
+	 * @throws
+	 */
+	public static MongoClient createMongoClient(DbInstance dbInstance) {
+		if (dbInstance == null) {
+			return null;
+		}
+
+		MongoCredential mongoCredential = MongoDBHelper.createMongoCredential(dbInstance);
+		ServerAddress serverAddress = MongoDBHelper.createServerAddress(dbInstance);
+		return createMongoClient(serverAddress, mongoCredential);
+	}
+
+	/**
+	 * 
+	 * createMongoClient
+	 * @param serverAddress
+	 * @param mongoCredential
+	 * @return MongoClient
+	 * @throws
+	 */
 	public static MongoClient createMongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
 		if (serverAddress == null) {
 			return null;
