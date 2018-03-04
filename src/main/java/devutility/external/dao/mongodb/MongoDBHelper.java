@@ -21,12 +21,6 @@ import devutility.internal.data.BeanHelper;
 import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.reflect.GenericTypeHelper;
 
-/**
- * MongoDBHelper
- * 
- * @author: Aldwin
- * @date: 2018-1-31 AM4:55:04
- */
 public class MongoDBHelper {
 	// region create MongoCredential
 
@@ -51,11 +45,9 @@ public class MongoDBHelper {
 	// region create MongoClient
 
 	/**
-	 * 
 	 * createMongoClient
 	 * @param dbInstance
 	 * @return MongoClient
-	 * @throws
 	 */
 	public static MongoClient createMongoClient(DbInstance dbInstance) {
 		if (dbInstance == null) {
@@ -68,12 +60,10 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * 
 	 * createMongoClient
 	 * @param serverAddress
 	 * @param mongoCredential
 	 * @return MongoClient
-	 * @throws
 	 */
 	public static MongoClient createMongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
 		if (serverAddress == null) {
@@ -90,14 +80,19 @@ public class MongoDBHelper {
 	// endregion
 
 	/**
-	 * createIndex @param field @return Index @throws
+	 * createIndex 
+	 * @param field
+	 * @return Index
 	 */
 	private static Index createIndex(String field) {
 		return createIndex(field, false);
 	}
 
 	/**
-	 * createIndex @param field @param uniqued @return Index @throws
+	 * createIndex 
+	 * @param field
+	 * @param uniqued
+	 * @return Index
 	 */
 	private static Index createIndex(String field, boolean uniqued) {
 		Index index = new Index().on(field, Direction.ASC);
@@ -110,7 +105,10 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createIndex @param mongoOperations @param clazz @param field void @throws
+	 * createIndex 
+	 * @param mongoOperations
+	 * @param clazz
+	 * @param field void
 	 */
 	public static <T> void createIndex(MongoOperations mongoOperations, Class<T> clazz, String field) {
 		mongoOperations.indexOps(clazz).ensureIndex(createIndex(field));
