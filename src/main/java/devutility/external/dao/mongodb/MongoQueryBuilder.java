@@ -1,5 +1,7 @@
 package devutility.external.dao.mongodb;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -9,13 +11,13 @@ public class MongoQueryBuilder {
 	private boolean empty = true;
 	private Query query = new Query();
 
-	public void in(String field, String[] values) {
-		if (StringHelper.isNullOrEmpty(field) || values == null || values.length == 0) {
+	public void in(String field, List<String> values) {
+		if (StringHelper.isNullOrEmpty(field) || values == null || values.size() == 0) {
 			return;
 		}
 
 		setEmpty(false);
-		query.addCriteria(Criteria.where(field).is(values));
+		query.addCriteria(Criteria.where(field).in(values));
 	}
 
 	public boolean isEmpty() {
