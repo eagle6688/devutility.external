@@ -128,8 +128,22 @@ public class MongoDBHelper {
 	 * @return UpdateResult
 	 */
 	public static UpdateResult update(MongoOperations mongoOperations, String id, String setField, Object setValue, Class<?> clazz) {
+		return update(mongoOperations, "_id", id, setField, setValue, clazz);
+	}
+
+	/**
+	 * update
+	 * @param mongoOperations
+	 * @param keyField
+	 * @param keyValue
+	 * @param setField
+	 * @param setValue
+	 * @param clazz
+	 * @return UpdateResult
+	 */
+	public static UpdateResult update(MongoOperations mongoOperations, String keyField, Object keyValue, String setField, Object setValue, Class<?> clazz) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
+		query.addCriteria(Criteria.where(keyField).is(keyValue));
 
 		Update update = new Update();
 		update.set(setField, setValue);
