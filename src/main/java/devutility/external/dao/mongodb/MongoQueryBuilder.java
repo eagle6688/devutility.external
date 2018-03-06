@@ -21,7 +21,7 @@ public class MongoQueryBuilder {
 	}
 
 	public void is(String field, Object value) {
-		if (StringHelper.isNullOrEmpty(field)) {
+		if (StringHelper.isNullOrEmpty(field) || value == null) {
 			return;
 		}
 
