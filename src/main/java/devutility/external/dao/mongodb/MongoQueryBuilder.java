@@ -20,6 +20,15 @@ public class MongoQueryBuilder {
 		query.addCriteria(Criteria.where(field).in(values));
 	}
 
+	public void is(String field, Object value) {
+		if (StringHelper.isNullOrEmpty(field)) {
+			return;
+		}
+
+		setEmpty(false);
+		query.addCriteria(Criteria.where(field).is(value));
+	}
+
 	public boolean isEmpty() {
 		return empty;
 	}
