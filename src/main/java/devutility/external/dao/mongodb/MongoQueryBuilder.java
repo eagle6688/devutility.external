@@ -11,6 +11,18 @@ public class MongoQueryBuilder {
 	private boolean empty = true;
 	private Query query = new Query();
 
+	public boolean isEmpty() {
+		return empty;
+	}
+
+	private void setEmpty(boolean empty) {
+		this.empty = empty;
+	}
+
+	public Query getQuery() {
+		return query;
+	}
+
 	public void in(String field, List<String> values) {
 		if (StringHelper.isNullOrEmpty(field) || values == null || values.size() == 0) {
 			return;
@@ -29,16 +41,22 @@ public class MongoQueryBuilder {
 		query.addCriteria(Criteria.where(field).is(value));
 	}
 
-	public boolean isEmpty() {
-		return empty;
+	public void paging(int pageIndex, int pageSize) {
+		if (pageIndex < 1 || pageSize < 1) {
+			return;
+		}
+
+		int skip = (pageIndex - 1) * pageSize;
+		query.skip(skip);
+		query.limit(pageSize);
 	}
 
-	private void setEmpty(boolean empty) {
-		this.empty = empty;
-	}
+	public void top(int topCount) {
+		if (topCount < 1) {
+			return;
+		}
 
-	public Query getQuery() {
-		return query;
+		query.limit(topCount);
 	}
 
 	public void clear() {

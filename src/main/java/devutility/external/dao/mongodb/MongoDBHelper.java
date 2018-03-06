@@ -11,10 +11,14 @@ import org.bson.Document;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.result.UpdateResult;
 
 import devutility.internal.dao.models.DbInstance;
 import devutility.internal.data.BeanHelper;
@@ -112,6 +116,25 @@ public class MongoDBHelper {
 	 */
 	public static <T> void createIndex(MongoOperations mongoOperations, Class<T> clazz, String field) {
 		mongoOperations.indexOps(clazz).ensureIndex(createIndex(field));
+	}
+
+	/**
+	 * update
+	 * @param mongoOperations
+	 * @param id
+	 * @param setField
+	 * @param setValue
+	 * @param clazz
+	 * @return UpdateResult
+	 */
+	public static UpdateResult update(MongoOperations mongoOperations, String id, String setField, Object setValue, Class<?> clazz) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(id));
+
+		Update update = new Update();
+		update.set(setField, setValue);
+
+		return mongoOperations.updateMulti(query, update, clazz);
 	}
 
 	// region to bean
