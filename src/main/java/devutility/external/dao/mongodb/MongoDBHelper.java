@@ -1,10 +1,18 @@
 package devutility.external.dao.mongodb;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -18,8 +26,8 @@ import devutility.internal.dao.models.DbInstance;
 
 public class MongoDBHelper {
 	/**
-	 * createMongoCredential 
-	 * @param dbInstance
+	 * createMongoCredential
+	 * @param dbInstance Database instance
 	 * @return MongoCredential
 	 */
 	public static MongoCredential createMongoCredential(DbInstance dbInstance) {
@@ -32,7 +40,7 @@ public class MongoDBHelper {
 
 	/**
 	 * createServerAddress 
-	 * @param dbInstance
+	 * @param dbInstance Database instance
 	 * @return ServerAddress
 	 */
 	public static ServerAddress createServerAddress(DbInstance dbInstance) {
@@ -41,7 +49,7 @@ public class MongoDBHelper {
 
 	/**
 	 * createMongoClient
-	 * @param dbInstance
+	 * @param dbInstance Database instance
 	 * @return MongoClient
 	 */
 	public static MongoClient createMongoClient(DbInstance dbInstance) {
@@ -56,8 +64,8 @@ public class MongoDBHelper {
 
 	/**
 	 * createMongoClient
-	 * @param serverAddress
-	 * @param mongoCredential
+	 * @param serverAddress Object
+	 * @param mongoCredential Object
 	 * @return MongoClient
 	 */
 	public static MongoClient createMongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
@@ -74,7 +82,6 @@ public class MongoDBHelper {
 
 	/**
 	 * createIndex 
-	 * @param field
 	 * @return Index
 	 */
 	private static Index createIndex(String field) {
@@ -84,7 +91,7 @@ public class MongoDBHelper {
 	/**
 	 * createIndex 
 	 * @param field
-	 * @param uniqued
+	 * @param uniqued Whether index is unique index.
 	 * @return Index
 	 */
 	private static Index createIndex(String field, boolean uniqued) {
@@ -138,5 +145,20 @@ public class MongoDBHelper {
 		update.set(setField, setValue);
 
 		return mongoOperations.updateMulti(query, update, clazz);
+	}
+
+	/**
+	 * mappingMongoConverter 
+	 * @param mongoDbFactory
+	 * @param mongoMappingContext
+	 * @return MappingMongoConverter
+	 */
+	public static MappingMongoConverter mappingMongoConverter(MongoDbFactory mongoDbFactory, MongoMappingContext mongoMappingContext) {
+		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDbFactory);
+
+		MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
+		mappingMongoConverter.setCustomConversions(new MongoCustomConversions(Collections.emptyList()));
+		mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
+		return mappingMongoConverter;
 	}
 }
