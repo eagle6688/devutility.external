@@ -6,6 +6,8 @@ import java.util.Collections;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.convert.DbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
@@ -81,6 +83,26 @@ public class MongoDBHelper {
 	}
 
 	/**
+	 * mongoTemplate
+	 * @return MongoTemplate
+	 */
+	public static MongoTemplate mongoTemplate(DbInstance dbInstance) {
+		MongoDbFactory mongoDbFactory = mongoDbFactory(dbInstance);
+		MappingMongoConverter mappingMongoConverter = mappingMongoConverter(dbInstance);
+		return new MongoTemplate(mongoDbFactory, mappingMongoConverter);
+	}
+
+	/**
+	 * createMongoDbFactory
+	 * @param dbInstance Object of database
+	 * @return MongoDbFactory
+	 */
+	public static MongoDbFactory mongoDbFactory(DbInstance dbInstance) {
+		MongoClient mongoClient = createMongoClient(dbInstance);
+		return new SimpleMongoDbFactory(mongoClient, dbInstance.getDatabase());
+	}
+
+	/**
 	 * createIndex 
 	 * @return Index
 	 */
@@ -90,8 +112,6 @@ public class MongoDBHelper {
 
 	/**
 	 * createIndex 
-	 * @param field
-	 * @param uniqued Whether index is unique index.
 	 * @return Index
 	 */
 	private static Index createIndex(String field, boolean uniqued) {
@@ -105,10 +125,7 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createIndex 
-	 * @param mongoOperations
-	 * @param clazz
-	 * @param field void
+	 * createIndex
 	 */
 	public static <T> void createIndex(MongoOperations mongoOperations, Class<T> clazz, String field) {
 		mongoOperations.indexOps(clazz).ensureIndex(createIndex(field));
@@ -116,11 +133,6 @@ public class MongoDBHelper {
 
 	/**
 	 * update
-	 * @param mongoOperations
-	 * @param id
-	 * @param setField
-	 * @param setValue
-	 * @param clazz
 	 * @return UpdateResult
 	 */
 	public static UpdateResult update(MongoOperations mongoOperations, String id, String setField, Object setValue, Class<?> clazz) {
@@ -129,12 +141,6 @@ public class MongoDBHelper {
 
 	/**
 	 * update
-	 * @param mongoOperations
-	 * @param keyField
-	 * @param keyValue
-	 * @param setField
-	 * @param setValue
-	 * @param clazz
 	 * @return UpdateResult
 	 */
 	public static UpdateResult update(MongoOperations mongoOperations, String keyField, Object keyValue, String setField, Object setValue, Class<?> clazz) {
@@ -148,9 +154,16 @@ public class MongoDBHelper {
 	}
 
 	/**
+	 * mongoMappingContext
+	 * @return MongoMappingContext
+	 */
+	public static MongoMappingContext mongoMappingContext() {
+		MongoMappingContext mappingContext = new MongoMappingContext();
+		return mappingContext;
+	}
+
+	/**
 	 * mappingMongoConverter 
-	 * @param mongoDbFactory
-	 * @param mongoMappingContext
 	 * @return MappingMongoConverter
 	 */
 	public static MappingMongoConverter mappingMongoConverter(MongoDbFactory mongoDbFactory, MongoMappingContext mongoMappingContext) {
@@ -160,5 +173,15 @@ public class MongoDBHelper {
 		mappingMongoConverter.setCustomConversions(new MongoCustomConversions(Collections.emptyList()));
 		mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
 		return mappingMongoConverter;
+	}
+
+	/**
+	 * mappingMongoConverter
+	 * @return MappingMongoConverter
+	 */
+	public static MappingMongoConverter mappingMongoConverter(DbInstance dbInstance) {
+		MongoDbFactory mongoDbFactory = mongoDbFactory(dbInstance);
+		MongoMappingContext mongoMappingContext = mongoMappingContext();
+		return mappingMongoConverter(mongoDbFactory, mongoMappingContext);
 	}
 }
