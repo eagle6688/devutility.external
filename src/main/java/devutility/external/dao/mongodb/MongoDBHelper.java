@@ -46,22 +46,26 @@ public class MongoDBHelper {
 	 * @return ServerAddress
 	 */
 	public static ServerAddress createServerAddress(DbInstance dbInstance) {
+		if (dbInstance == null) {
+			return null;
+		}
+
 		return new ServerAddress(dbInstance.getHost(), dbInstance.getPort());
 	}
 
 	/**
-	 * createMongoClient
-	 * @param dbInstance Database instance
+	 * mongoClient
+	 * @param dbInstance
 	 * @return MongoClient
 	 */
-	public static MongoClient createMongoClient(DbInstance dbInstance) {
+	public static MongoClient mongoClient(DbInstance dbInstance) {
 		if (dbInstance == null) {
 			return null;
 		}
 
 		MongoCredential mongoCredential = MongoDBHelper.createMongoCredential(dbInstance);
 		ServerAddress serverAddress = MongoDBHelper.createServerAddress(dbInstance);
-		return createMongoClient(serverAddress, mongoCredential);
+		return mongoClient(serverAddress, mongoCredential);
 	}
 
 	/**
@@ -70,7 +74,7 @@ public class MongoDBHelper {
 	 * @param mongoCredential Object
 	 * @return MongoClient
 	 */
-	public static MongoClient createMongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
+	public static MongoClient mongoClient(ServerAddress serverAddress, MongoCredential mongoCredential) {
 		if (serverAddress == null) {
 			return null;
 		}
@@ -87,6 +91,10 @@ public class MongoDBHelper {
 	 * @return MongoTemplate
 	 */
 	public static MongoTemplate mongoTemplate(DbInstance dbInstance) {
+		if (dbInstance == null) {
+			return null;
+		}
+
 		MongoDbFactory mongoDbFactory = mongoDbFactory(dbInstance);
 		MappingMongoConverter mappingMongoConverter = mappingMongoConverter(dbInstance);
 		return new MongoTemplate(mongoDbFactory, mappingMongoConverter);
@@ -98,7 +106,11 @@ public class MongoDBHelper {
 	 * @return MongoDbFactory
 	 */
 	public static MongoDbFactory mongoDbFactory(DbInstance dbInstance) {
-		MongoClient mongoClient = createMongoClient(dbInstance);
+		if (dbInstance == null) {
+			return null;
+		}
+
+		MongoClient mongoClient = mongoClient(dbInstance);
 		return new SimpleMongoDbFactory(mongoClient, dbInstance.getDatabase());
 	}
 
@@ -167,6 +179,10 @@ public class MongoDBHelper {
 	 * @return MappingMongoConverter
 	 */
 	public static MappingMongoConverter mappingMongoConverter(MongoDbFactory mongoDbFactory, MongoMappingContext mongoMappingContext) {
+		if (mongoDbFactory == null || mongoMappingContext == null) {
+			return null;
+		}
+
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDbFactory);
 
 		MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
@@ -180,6 +196,10 @@ public class MongoDBHelper {
 	 * @return MappingMongoConverter
 	 */
 	public static MappingMongoConverter mappingMongoConverter(DbInstance dbInstance) {
+		if (dbInstance == null) {
+			return null;
+		}
+
 		MongoDbFactory mongoDbFactory = mongoDbFactory(dbInstance);
 		MongoMappingContext mongoMappingContext = mongoMappingContext();
 		return mappingMongoConverter(mongoDbFactory, mongoMappingContext);
