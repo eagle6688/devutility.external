@@ -1,13 +1,16 @@
 package devutility.external.dao.redis;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import devutility.external.data.codec.ObjectCompressHelper;
 import devutility.internal.dao.models.RedisInstance;
+import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.StringHelper;
+import devutility.internal.lang.models.EntityField;
 import redis.clients.jedis.Jedis;
 
 public class RedisHelper {
@@ -104,6 +107,56 @@ public class RedisHelper {
 		}
 
 		return stringSet(key, compressedValue, expireSeconds);
+	}
+
+	// endregion
+
+	// region entities
+
+	public <T> boolean entitiesSet(String key, List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException, IOException {
+		String[][] arrays = toArrays(entities, clazz);
+		return objectSet(key, arrays);
+	}
+
+	private <T> String[][] toArrays(List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException {
+		List<EntityField> entityFields = ClassHelper.getEntityFields(clazz);
+
+		if (entities.size() == 0 || entityFields.size() == 0) {
+			return null;
+		}
+
+		String[][] arrays = new String[entities.size()][];
+
+		for (int i = 0; i < entities.size(); i++) {
+			T entity = entities.get(i);
+			String[] array = toArray(entity, entityFields);
+
+			if (array != null) {
+				arrays[i] = array;
+			}
+		}
+
+		return arrays;
+	}
+
+	private <T> String[] toArray(T entity, List<EntityField> entityFields) throws IllegalArgumentException, IllegalAccessException {
+		if (entity == null || entityFields.size() == 0) {
+			return null;
+		}
+
+		String[] array = new String[entityFields.size()];
+
+		for (int i = 0; i < entityFields.size(); i++) {
+			EntityField entityField = entityFields.get(i);
+			Field field = entityField.getField();
+			Object value = field.get(entity);
+
+			if (value != null) {
+				array[i] = value.toString();
+			}
+		}
+
+		return array;
 	}
 
 	// endregion
