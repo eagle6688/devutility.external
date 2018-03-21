@@ -2,12 +2,16 @@ package devutility.external.dao.redis;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import devutility.external.data.codec.ObjectCompressHelper;
 import devutility.internal.dao.models.RedisInstance;
+import devutility.internal.data.BeanHelper;
+import devutility.internal.data.DataHelper;
 import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.StringHelper;
 import devutility.internal.lang.models.EntityField;
@@ -113,12 +117,12 @@ public class RedisHelper {
 
 	// region entities
 
-	public <T> boolean entitiesSet(String key, List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException, IOException {
+	public <T> boolean entitiesSet(String key, List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException, IOException, InvocationTargetException {
 		String[][] arrays = toArrays(entities, clazz);
 		return objectSet(key, arrays);
 	}
 
-	private <T> String[][] toArrays(List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException {
+	private <T> String[][] toArrays(List<T> entities, Class<T> clazz) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		List<EntityField> entityFields = ClassHelper.getEntityFields(clazz);
 
 		if (entities.size() == 0 || entityFields.size() == 0) {
@@ -139,7 +143,7 @@ public class RedisHelper {
 		return arrays;
 	}
 
-	private <T> String[] toArray(T entity, List<EntityField> entityFields) throws IllegalArgumentException, IllegalAccessException {
+	private <T> String[] toArray(T entity, List<EntityField> entityFields) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if (entity == null || entityFields.size() == 0) {
 			return null;
 		}
@@ -148,15 +152,67 @@ public class RedisHelper {
 
 		for (int i = 0; i < entityFields.size(); i++) {
 			EntityField entityField = entityFields.get(i);
-			Field field = entityField.getField();
-			Object value = field.get(entity);
+			Method method = entityField.getGetter();
+			Object value = method.invoke(entity);
 
 			if (value != null) {
-				array[i] = value.toString();
+				array[i] = DataHelper.toString(value);
 			}
 		}
 
 		return array;
+	}
+
+	public <T> List<T> entitiesGet(String key, Class<T> clazz) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		String[][] arrays = objectGet(key, String[][].class);
+		return toEntities(arrays, clazz);
+	}
+
+	private <T> List<T> toEntities(String[][] arrays, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		List<T> list = new ArrayList<>();
+		List<EntityField> entityFields = ClassHelper.getEntityFields(clazz);
+
+		if (arrays == null || arrays.length == 0 || clazz == null || entityFields.size() == 0) {
+			return list;
+		}
+
+		for (int i = 0; i < arrays.length; i++) {
+			T entity = toEntity(arrays[i], entityFields, clazz);
+
+			if (entity != null) {
+				list.add(entity);
+			}
+		}
+
+		return list;
+	}
+
+	private <T> T toEntity(String[] array, List<EntityField> entityFields, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (array == null || array.length == 0 || entityFields.size() == 0) {
+			return null;
+		}
+
+		T entity = ClassHelper.newInstance(clazz);
+
+		for (int i = 0; i < entityFields.size(); i++) {
+			if (array[i] == null) {
+				continue;
+			}
+
+			EntityField entityField = entityFields.get(i);
+			Field field = entityField.getField();
+			Class<?> fieldClazz = field.getType();
+			Method setter = entityField.getSetter();
+
+			if (fieldClazz.isArray()) {
+				List<?> list = DataHelper.toList(array[i], fieldClazz.getComponentType());
+				BeanHelper.setArrayField(setter, entity, list, fieldClazz);
+			} else {
+				BeanHelper.setField(setter, entity, array[i], fieldClazz);
+			}
+		}
+
+		return entity;
 	}
 
 	// endregion

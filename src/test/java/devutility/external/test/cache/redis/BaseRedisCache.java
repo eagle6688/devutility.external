@@ -1,13 +1,9 @@
 package devutility.external.test.cache.redis;
 
-import devutility.external.test.cache.BaseCache;
-import devutility.external.test.config.DBConfig;
-import devutility.internal.dao.models.RedisInstance;
+import devutility.external.dao.redis.RedisHelper;
+import devutility.external.test.config.DbConfig;
+import devutility.internal.test.BaseTest;
 
-public class BaseRedisCache extends BaseCache {
-	protected RedisInstance redisInstance;
-
-	public BaseRedisCache() {
-		redisInstance = DBConfig.getRedisInstance();
-	}
+public abstract class BaseRedisCache extends BaseTest {
+	protected RedisHelper redisHelper = DbConfig.redisHelper();
 }
