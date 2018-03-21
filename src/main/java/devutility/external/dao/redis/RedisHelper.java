@@ -203,13 +203,7 @@ public class RedisHelper {
 			Field field = entityField.getField();
 			Class<?> fieldClazz = field.getType();
 			Method setter = entityField.getSetter();
-
-			if (fieldClazz.isArray()) {
-				List<?> list = DataHelper.toList(array[i], fieldClazz.getComponentType());
-				BeanHelper.setArrayField(setter, entity, list, fieldClazz);
-			} else {
-				BeanHelper.setField(setter, entity, array[i], fieldClazz);
-			}
+			BeanHelper.setField(setter, entity, array[i], fieldClazz);
 		}
 
 		return entity;
