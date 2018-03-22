@@ -3,6 +3,8 @@ package devutility.external.dao.mongodb;
 import org.springframework.data.mongodb.core.query.Query;
 
 public abstract class MongoSearchParam {
+	private Boolean deleted;
+
 	/**
 	 * Page index
 	 */
@@ -17,11 +19,23 @@ public abstract class MongoSearchParam {
 	 * Count for limit
 	 */
 	private int topCount;
-	
+
 	/**
 	 * query builder
 	 */
 	protected MongoQueryBuilder mongoQueryBuilder = new MongoQueryBuilder();
+
+	public MongoSearchParam() {
+		deleted = false;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public int getPageIndex() {
 		return pageIndex;
@@ -58,6 +72,10 @@ public abstract class MongoSearchParam {
 	public Query getQuery() {
 		if (mongoQueryBuilder.isEmpty()) {
 			buildQuery();
+		}
+
+		if (deleted != null) {
+			mongoQueryBuilder.is("Deleted", deleted);
 		}
 
 		if (pageIndex > 0 && pageSize > 0) {
