@@ -1,8 +1,16 @@
 package devutility.external.dao.mongodb;
 
+import java.util.Collection;
+
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import devutility.internal.lang.StringHelper;
+
 public abstract class MongoSearchParam {
+	/**
+	 * Deleted field
+	 */
 	private Boolean deleted;
 
 	/**
@@ -21,12 +29,104 @@ public abstract class MongoSearchParam {
 	private int topCount;
 
 	/**
-	 * query builder
+	 * Query
 	 */
-	protected MongoQueryBuilder mongoQueryBuilder = new MongoQueryBuilder();
+	private Query query;
 
+	/**
+	 * Constructor
+	 */
 	public MongoSearchParam() {
 		deleted = false;
+		query = new Query();
+	}
+
+	/**
+	 * getQuery 
+	 * @return Query
+	 */
+	public Query getQuery() {
+		clear();
+		buildQuery();
+
+		if (deleted != null) {
+			is("Deleted", deleted);
+		}
+
+		if (topCount > 0) {
+			top(topCount);
+		}
+
+		if (pageIndex > 0 && pageSize > 0) {
+			paging(pageIndex, pageSize);
+		}
+
+		return query;
+	}
+
+	/**
+	 * clear void
+	 */
+	public void clear() {
+		query = new Query();
+	}
+
+	/**
+	 * is 
+	 * @param field Field in mongo
+	 * @param value Search value 
+	 */
+	protected void is(String field, Object value) {
+		if (StringHelper.isNullOrEmpty(field)) {
+			return;
+		}
+
+		query.addCriteria(Criteria.where(field).is(value));
+	}
+
+	/**
+	 * in 
+	 * @param field Field in mongo
+	 * @param values Search values
+	 */
+	protected void in(String field, Collection<?> values) {
+		if (StringHelper.isNullOrEmpty(field)) {
+			return;
+		}
+
+		query.addCriteria(Criteria.where(field).in(values));
+	}
+
+	/**
+	 * buildQuery void
+	 */
+	protected abstract void buildQuery();
+
+	/**
+	 * paging 
+	 * @param pageIndex
+	 * @param pageSize void
+	 */
+	private void paging(int pageIndex, int pageSize) {
+		if (pageIndex < 1 || pageSize < 1) {
+			return;
+		}
+
+		int skip = (pageIndex - 1) * pageSize;
+		query.skip(skip);
+		query.limit(pageSize);
+	}
+
+	/**
+	 * top 
+	 * @param topCount void
+	 */
+	private void top(int topCount) {
+		if (topCount < 1) {
+			return;
+		}
+
+		query.limit(topCount);
 	}
 
 	public boolean isDeleted() {
@@ -60,37 +160,4 @@ public abstract class MongoSearchParam {
 	public void setTopCount(int topCount) {
 		this.topCount = topCount;
 	}
-
-	public boolean isEmpty() {
-		if (mongoQueryBuilder.isEmpty()) {
-			buildQuery();
-		}
-
-		return mongoQueryBuilder.isEmpty();
-	}
-
-	public Query getQuery() {
-		if (mongoQueryBuilder.isEmpty()) {
-			buildQuery();
-		}
-
-		if (deleted != null) {
-			mongoQueryBuilder.is("Deleted", deleted);
-		}
-
-		if (pageIndex > 0 && pageSize > 0) {
-			mongoQueryBuilder.paging(pageIndex, pageSize);
-		}
-
-		return mongoQueryBuilder.getQuery();
-	}
-
-	protected void clear() {
-		mongoQueryBuilder.clear();
-	}
-
-	/**
-	 * buildQuery void
-	 */
-	protected abstract void buildQuery();
 }

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.eagle6688</groupId>
 	<artifactId>devutility.external</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<packaging>jar</packaging>
 	<name>devutility.external</name>
 	<description>Some utilities for Java development</description>
