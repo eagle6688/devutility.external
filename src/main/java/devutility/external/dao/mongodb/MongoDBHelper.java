@@ -1,7 +1,10 @@
 package devutility.external.dao.mongodb;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -18,6 +21,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.util.Pair;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
@@ -25,6 +29,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.result.UpdateResult;
 
 import devutility.internal.dao.models.DbInstance;
+import devutility.internal.lang.models.EntityField;
 
 public class MongoDBHelper {
 	/**
@@ -41,7 +46,7 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createServerAddress 
+	 * createServerAddress
 	 * @param dbInstance Database instance
 	 * @return ServerAddress
 	 */
@@ -88,6 +93,7 @@ public class MongoDBHelper {
 
 	/**
 	 * mongoTemplate
+	 * @param dbInstance
 	 * @return MongoTemplate
 	 */
 	public static MongoTemplate mongoTemplate(DbInstance dbInstance) {
@@ -101,8 +107,8 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createMongoDbFactory
-	 * @param dbInstance Object of database
+	 * mongoDbFactory
+	 * @param dbInstance
 	 * @return MongoDbFactory
 	 */
 	public static MongoDbFactory mongoDbFactory(DbInstance dbInstance) {
@@ -115,7 +121,8 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createIndex 
+	 * createIndex
+	 * @param field
 	 * @return Index
 	 */
 	private static Index createIndex(String field) {
@@ -123,7 +130,9 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * createIndex 
+	 * createIndex
+	 * @param field
+	 * @param uniqued
 	 * @return Index
 	 */
 	private static Index createIndex(String field, boolean uniqued) {
@@ -138,6 +147,9 @@ public class MongoDBHelper {
 
 	/**
 	 * createIndex
+	 * @param mongoOperations
+	 * @param clazz
+	 * @param field void
 	 */
 	public static <T> void createIndex(MongoOperations mongoOperations, Class<T> clazz, String field) {
 		mongoOperations.indexOps(clazz).ensureIndex(createIndex(field));
@@ -145,6 +157,11 @@ public class MongoDBHelper {
 
 	/**
 	 * update
+	 * @param mongoOperations
+	 * @param id
+	 * @param setField
+	 * @param setValue
+	 * @param clazz
 	 * @return UpdateResult
 	 */
 	public static UpdateResult update(MongoOperations mongoOperations, String id, String setField, Object setValue, Class<?> clazz) {
@@ -153,6 +170,12 @@ public class MongoDBHelper {
 
 	/**
 	 * update
+	 * @param mongoOperations
+	 * @param keyField
+	 * @param keyValue
+	 * @param setField
+	 * @param setValue
+	 * @param clazz
 	 * @return UpdateResult
 	 */
 	public static UpdateResult update(MongoOperations mongoOperations, String keyField, Object keyValue, String setField, Object setValue, Class<?> clazz) {
@@ -175,7 +198,9 @@ public class MongoDBHelper {
 	}
 
 	/**
-	 * mappingMongoConverter 
+	 * mappingMongoConverter
+	 * @param mongoDbFactory
+	 * @param mongoMappingContext
 	 * @return MappingMongoConverter
 	 */
 	public static MappingMongoConverter mappingMongoConverter(MongoDbFactory mongoDbFactory, MongoMappingContext mongoMappingContext) {
@@ -193,6 +218,7 @@ public class MongoDBHelper {
 
 	/**
 	 * mappingMongoConverter
+	 * @param dbInstance
 	 * @return MappingMongoConverter
 	 */
 	public static MappingMongoConverter mappingMongoConverter(DbInstance dbInstance) {
@@ -203,5 +229,65 @@ public class MongoDBHelper {
 		MongoDbFactory mongoDbFactory = mongoDbFactory(dbInstance);
 		MongoMappingContext mongoMappingContext = mongoMappingContext();
 		return mappingMongoConverter(mongoDbFactory, mongoMappingContext);
+	}
+
+	/**
+	 * isPk
+	 * @param annotation object
+	 * @return boolean
+	 */
+	public static boolean isPk(Annotation annotation) {
+		return org.springframework.data.annotation.Id.class == annotation.annotationType();
+	}
+
+	/**
+	 * isField
+	 * @param annotation object
+	 * @return boolean
+	 */
+	public static boolean isField(Annotation annotation) {
+		return org.springframework.data.mongodb.core.mapping.Field.class.equals(annotation.annotationType());
+	}
+
+	/**
+	 * getFieldName
+	 * @param annotation object
+	 * @return String
+	 */
+	public static String getFieldName(Annotation annotation) {
+		org.springframework.data.mongodb.core.mapping.Field field = org.springframework.data.mongodb.core.mapping.Field.class.cast(annotation);
+		return field.value();
+	}
+
+	public static <T> Pair<Query, Update> entityToUpdate(T entity, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Query query = new Query();
+		Update update = new Update();
+
+		for (EntityField entityField : entityFields) {
+			boolean hasAnnotation = false;
+			Object value = entityField.getValue(entity);
+			Annotation[] annotations = entityField.getField().getAnnotations();
+
+			for (Annotation annotation : annotations) {
+				if (isField(annotation)) {
+					hasAnnotation = true;
+					update.set(getFieldName(annotation), value);
+					break;
+				}
+
+				if (isPk(annotation)) {
+					query.addCriteria(Criteria.where("_id").is(value));
+					update.set("_id", value);
+					hasAnnotation = true;
+					break;
+				}
+			}
+
+			if (!hasAnnotation) {
+				update.set(entityField.getField().getName(), value);
+			}
+		}
+
+		return Pair.of(query, update);
 	}
 }
