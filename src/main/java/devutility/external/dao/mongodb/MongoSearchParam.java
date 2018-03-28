@@ -37,7 +37,6 @@ public abstract class MongoSearchParam {
 	 * Constructor
 	 */
 	public MongoSearchParam() {
-		deleted = false;
 		query = new Query();
 	}
 
