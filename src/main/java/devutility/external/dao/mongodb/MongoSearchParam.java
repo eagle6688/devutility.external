@@ -41,7 +41,7 @@ public abstract class MongoSearchParam {
 	}
 
 	/**
-	 * getQuery 
+	 * getQuery
 	 * @return Query
 	 */
 	public Query getQuery() {
@@ -71,9 +71,9 @@ public abstract class MongoSearchParam {
 	}
 
 	/**
-	 * is 
+	 * is
 	 * @param field Field in mongo
-	 * @param value Search value 
+	 * @param value Search value
 	 */
 	protected void is(String field, Object value) {
 		if (StringHelper.isNullOrEmpty(field)) {
@@ -84,12 +84,12 @@ public abstract class MongoSearchParam {
 	}
 
 	/**
-	 * in 
+	 * in
 	 * @param field Field in mongo
 	 * @param values Search values
 	 */
 	protected void in(String field, Collection<?> values) {
-		if (StringHelper.isNullOrEmpty(field)) {
+		if (StringHelper.isNullOrEmpty(field) || values == null) {
 			return;
 		}
 
@@ -102,7 +102,7 @@ public abstract class MongoSearchParam {
 	protected abstract void buildQuery();
 
 	/**
-	 * paging 
+	 * paging
 	 * @param pageIndex
 	 * @param pageSize void
 	 */
@@ -117,7 +117,7 @@ public abstract class MongoSearchParam {
 	}
 
 	/**
-	 * top 
+	 * top
 	 * @param topCount void
 	 */
 	private void top(int topCount) {
