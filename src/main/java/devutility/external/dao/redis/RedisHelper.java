@@ -266,11 +266,21 @@ public class RedisHelper {
 		int pagesCount = pagingGetCount(originalKey);
 
 		if (pagesCount == 0) {
-			return Arrays.asList(objectGet(originalKey, String[][].class));
+			String[][] array = objectGet(originalKey, String[][].class);
+
+			if (array == null) {
+				return new ArrayList<String[]>();
+			}
+
+			return Arrays.asList(array);
 		}
 
 		for (int index = 0; index < pagesCount; index++) {
-			list.addAll(Arrays.asList(pagingGetArray(originalKey, index)));
+			String[][] array = pagingGetArray(originalKey, index);
+
+			if (array != null) {
+				list.addAll(Arrays.asList(array));
+			}
 		}
 
 		return list;
