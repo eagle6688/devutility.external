@@ -15,9 +15,14 @@ public class CommonsEmailHelper {
 	private int port;
 	private String userName;
 	private String password;
+	private boolean debug;
 
-	public CommonsEmailHelper(String host, int port) {
-		this(host, port, null, null);
+	public boolean isDebug() {
+		return debug;
+	}
+
+	public void setDebug(boolean debug) {
+		this.debug = debug;
 	}
 
 	public CommonsEmailHelper(String host, int port, String userName, String password) {
@@ -27,20 +32,8 @@ public class CommonsEmailHelper {
 		this.password = password;
 	}
 
-	public String getHost() {
-		return host;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public String getPassword() {
-		return password;
+	public CommonsEmailHelper(String host, int port) {
+		this(host, port, null, null);
 	}
 
 	private void initEmail(Email email) {
@@ -49,7 +42,7 @@ public class CommonsEmailHelper {
 		email.setAuthenticator(defaultAuthenticator());
 		email.setCharset("UTF-8");
 		email.setSentDate(new Date());
-		email.setDebug(true);
+		email.setDebug(debug);
 	}
 
 	private DefaultAuthenticator defaultAuthenticator() {
