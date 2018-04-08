@@ -21,7 +21,6 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.util.Pair;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
@@ -256,38 +255,84 @@ public class MongoDBHelper {
 	 */
 	public static String getFieldName(Annotation annotation) {
 		org.springframework.data.mongodb.core.mapping.Field field = org.springframework.data.mongodb.core.mapping.Field.class.cast(annotation);
+
+		if (field == null) {
+			return null;
+		}
+
 		return field.value();
 	}
 
-	public static <T> Pair<Query, Update> entityToUpdate(T entity, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	/**
+	 * entityToQuery
+	 * @param entity
+	 * @param fields
+	 * @param entityFields
+	 * @return Query
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	public static <T> Query entityToQuery(T entity, List<String> fields, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Query query = new Query();
-		Update update = new Update();
 
 		for (EntityField entityField : entityFields) {
-			boolean hasAnnotation = false;
 			Object value = entityField.getValue(entity);
 			Annotation[] annotations = entityField.getField().getAnnotations();
 
 			for (Annotation annotation : annotations) {
+				String fieldName = null;
+
 				if (isField(annotation)) {
-					hasAnnotation = true;
-					update.set(getFieldName(annotation), value);
-					break;
+					fieldName = getFieldName(annotation);
 				}
 
 				if (isPk(annotation)) {
-					query.addCriteria(Criteria.where("_id").is(value));
-					update.set("_id", value);
-					hasAnnotation = true;
-					break;
+					fieldName = "_id";
 				}
-			}
 
-			if (!hasAnnotation) {
-				update.set(entityField.getField().getName(), value);
+				if (fields.contains(fieldName)) {
+					query.addCriteria(Criteria.where(fieldName).is(value));
+				}
 			}
 		}
 
-		return Pair.of(query, update);
+		return query;
+	}
+
+	/**
+	 * entityToUpdate
+	 * @param entity
+	 * @param entityFields
+	 * @return Update
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	public static <T> Update entityToUpdate(T entity, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Update update = new Update();
+
+		for (EntityField entityField : entityFields) {
+			Object value = entityField.getValue(entity);
+			Annotation[] annotations = entityField.getField().getAnnotations();
+
+			for (Annotation annotation : annotations) {
+				String fieldName = null;
+
+				if (isField(annotation)) {
+					fieldName = getFieldName(annotation);
+				}
+
+				if (isPk(annotation)) {
+					fieldName = "_id";
+				}
+
+				if (fieldName != null) {
+					update.set(fieldName, value);
+				}
+			}
+		}
+
+		return update;
 	}
 }
