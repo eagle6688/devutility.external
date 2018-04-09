@@ -14,10 +14,12 @@ public class MailConfig {
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("host", PropertiesHelper.getProperty(properties, "host"));
-		map.put("fromEmail", PropertiesHelper.getProperty(properties, "fromEmail"));
+		map.put("port", PropertiesHelper.getProperty(properties, "port"));
 		map.put("userName", PropertiesHelper.getProperty(properties, "userName"));
 		map.put("password", PropertiesHelper.getProperty(properties, "password"));
-		map.put("toEmail", PropertiesHelper.getProperty(properties, "toEmail"));
+		map.put("fromEmail", PropertiesHelper.getProperty(properties, "fromEmail"));
+		map.put("toEmails", PropertiesHelper.getProperty(properties, "toEmails"));
+		map.put("copyEmails", PropertiesHelper.getProperty(properties, "copyEmails"));
 		return map;
 	}
 }

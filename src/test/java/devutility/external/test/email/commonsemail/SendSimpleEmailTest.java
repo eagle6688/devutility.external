@@ -15,11 +15,13 @@ public class SendSimpleEmailTest extends BaseTest {
 	@Override
 	public void run() {
 		Map<String, String> map = MailConfig.get();
-		CommonsEmailHelper commonsEmailHelper = new CommonsEmailHelper(map.get("host"), 25, map.get("userName"), map.get("password"));
+		int port = Integer.valueOf(map.get("port"));
+		CommonsEmailHelper commonsEmailHelper = new CommonsEmailHelper(map.get("host"), port, map.get("userName"), map.get("password"));
 
 		EmailModel emailModel = new EmailModel();
 		emailModel.setFromEmail(map.get("fromEmail"));
-		emailModel.setToEmails(Arrays.asList(map.get("toEmail")));
+		emailModel.setToEmails(Arrays.asList(map.get("toEmails").split(",")));
+		emailModel.setCopyEmails(Arrays.asList(map.get("copyEmails").split(",")));
 		emailModel.setSubject("Test mail");
 		emailModel.setContent("Hello world!");
 
