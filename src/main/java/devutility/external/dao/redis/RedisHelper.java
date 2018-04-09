@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import devutility.external.data.codec.ObjectCompressHelper;
+import devutility.internal.base.Convertor;
 import devutility.internal.dao.models.RedisInstance;
 import devutility.internal.data.BeanHelper;
-import devutility.internal.data.DataHelper;
 import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.StringHelper;
 import devutility.internal.lang.models.EntityField;
@@ -156,7 +156,7 @@ public class RedisHelper {
 			Object value = method.invoke(entity);
 
 			if (value != null) {
-				array[i] = DataHelper.toString(value);
+				array[i] = Convertor.objectToString(value);
 			}
 		}
 

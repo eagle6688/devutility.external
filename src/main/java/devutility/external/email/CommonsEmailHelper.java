@@ -1,5 +1,6 @@
 package devutility.external.email;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
 
@@ -10,11 +11,10 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 
+import devutility.internal.util.PropertiesHelper;
+
 public class CommonsEmailHelper {
-	private String host;
-	private int port;
-	private String userName;
-	private String password;
+	private EmailServer emailServer;
 	private boolean debug;
 
 	public boolean isDebug() {
@@ -26,35 +26,33 @@ public class CommonsEmailHelper {
 	}
 
 	public CommonsEmailHelper(String host, int port, String userName, String password) {
-		this.host = host;
-		this.port = port;
-		this.userName = userName;
-		this.password = password;
+		this.emailServer = new EmailServer(host, port, userName, password);
 	}
 
-	public CommonsEmailHelper(String host, int port) {
-		this(host, port, null, null);
+	public CommonsEmailHelper(EmailServer emailServer) {
+		this.emailServer = emailServer;
 	}
 
 	private void initEmail(Email email) {
-		email.setHostName(host);
-		email.setSmtpPort(port);
+		email.setHostName(emailServer.getHost());
+		email.setSmtpPort(emailServer.getPort());
 		email.setAuthenticator(defaultAuthenticator());
+		email.setSSLOnConnect(emailServer.isSSLOnConnect());
 		email.setCharset("UTF-8");
 		email.setSentDate(new Date());
 		email.setDebug(debug);
 	}
 
 	private DefaultAuthenticator defaultAuthenticator() {
-		if (StringUtils.isNotBlank(userName)) {
-			return new DefaultAuthenticator(userName, password);
+		if (StringUtils.isNotBlank(emailServer.getUserName())) {
+			return new DefaultAuthenticator(emailServer.getUserName(), emailServer.getPassword());
 		}
 
 		return null;
 	}
 
 	private void setEmail(Email email, EmailModel emailModel) throws EmailException {
-		email.setSSLOnConnect(emailModel.isSSLOnConnect());
+
 		email.setFrom(emailModel.getFromEmail(), emailModel.getFromName(), "utf-8");
 		setToEmails(email, emailModel);
 		setCopyEmails(email, emailModel);
@@ -107,5 +105,15 @@ public class CommonsEmailHelper {
 		setEmail(email, emailModel);
 		email.setHtmlMsg(emailModel.getContent());
 		email.send();
+	}
+
+	public static CommonsEmailHelper create(String propertiesName) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		EmailServer emailServer = PropertiesHelper.toModel(propertiesName, null, EmailServer.class);
+
+		if (emailServer == null) {
+			return null;
+		}
+
+		return new CommonsEmailHelper(emailServer);
 	}
 }

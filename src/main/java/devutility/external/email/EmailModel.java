@@ -12,7 +12,6 @@ public class EmailModel {
 	private Map<String, String> copyEmailsMap;
 	private String subject;
 	private String content;
-	private boolean SSLOnConnect;
 
 	public String getFromEmail() {
 		return fromEmail;
@@ -76,13 +75,5 @@ public class EmailModel {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public boolean isSSLOnConnect() {
-		return SSLOnConnect;
-	}
-
-	public void setSSLOnConnect(boolean sSLOnConnect) {
-		SSLOnConnect = sSLOnConnect;
 	}
 }
