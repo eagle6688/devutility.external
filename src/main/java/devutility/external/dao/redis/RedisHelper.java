@@ -201,9 +201,8 @@ public class RedisHelper {
 
 			EntityField entityField = entityFields.get(i);
 			Field field = entityField.getField();
-			Class<?> fieldClazz = field.getType();
 			Method setter = entityField.getSetter();
-			BeanHelper.setField(setter, entity, array[i], fieldClazz);
+			BeanHelper.setField(setter, entity, array[i], field);
 		}
 
 		return entity;
