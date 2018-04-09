@@ -50,10 +50,10 @@ public class BulkOperationsHelper {
 	}
 
 	/**
-	 * entityToQueryAndUpdate
+	 * Entity to query and update
 	 * @param entity
 	 * @param entityFields
-	 * @return Pair<Query,Update>
+	 * @return {@literal Pair<Query, Update>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
@@ -91,10 +91,10 @@ public class BulkOperationsHelper {
 	}
 
 	/**
-	 * entitiesToPairs
+	 * Entities to pairs
 	 * @param list
 	 * @param clazz
-	 * @return List<Pair<Query,Update>>
+	 * @return {@literal List<Pair<Query,Update>>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
@@ -115,7 +115,7 @@ public class BulkOperationsHelper {
 	 * @param list
 	 * @param fields
 	 * @param clazz
-	 * @return List<Pair<Query,Update>>
+	 * @return {@literal List<Pair<Query,Update>>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
