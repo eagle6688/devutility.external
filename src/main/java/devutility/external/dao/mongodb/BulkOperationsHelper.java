@@ -19,46 +19,39 @@ import devutility.internal.lang.ClassHelper;
 import devutility.internal.lang.models.EntityField;
 
 public class BulkOperationsHelper {
+	/**
+	 * MongoOperations
+	 */
 	private MongoOperations mongoOperations;
 
 	/**
-	 * BulkOperationsHelper
-	 * @param mongoOperations
+	 * Constructor
+	 * @param mongoOperations: MongoOperations object
 	 */
 	public BulkOperationsHelper(MongoOperations mongoOperations) {
 		this.mongoOperations = mongoOperations;
 	}
 
 	/**
-	 * bulkOperations
-	 * @param bulkMode
-	 * @param clazz
+	 * Get BulkOperations object
+	 * @param bulkMode: Mode for bulk operation.
+	 * @param clazz: MongoDB collection entity class
 	 * @return BulkOperations
 	 */
-	public BulkOperations bulkOperations(BulkMode bulkMode, Class<?> clazz) {
+	private BulkOperations bulkOperations(BulkMode bulkMode, Class<?> clazz) {
 		return mongoOperations.bulkOps(bulkMode, clazz);
 	}
 
 	/**
-	 * bulkOperations
-	 * @param bulkMode
-	 * @param collection
-	 * @return BulkOperations
-	 */
-	public BulkOperations bulkOperations(BulkMode bulkMode, String collection) {
-		return mongoOperations.bulkOps(bulkMode, collection);
-	}
-
-	/**
-	 * Entity to query and update
-	 * @param entity
-	 * @param entityFields
+	 * Entity to query and update pair
+	 * @param entity: Entity object
+	 * @param entityFields: Entity fields
 	 * @return {@literal Pair<Query, Update>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
 	 */
-	public static <T> Pair<Query, Update> entityToQueryAndUpdate(T entity, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static <T> Pair<Query, Update> toPair(T entity, List<EntityField> entityFields) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Query query = new Query();
 		Update update = new Update();
 
@@ -91,36 +84,36 @@ public class BulkOperationsHelper {
 	}
 
 	/**
-	 * Entities to pairs
-	 * @param list
-	 * @param clazz
+	 * Entities to query and update pairs.
+	 * @param list: Entities.
+	 * @param clazz: Entity class.
 	 * @return {@literal List<Pair<Query,Update>>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
 	 */
-	public static <T> List<Pair<Query, Update>> entitiesToPairs(List<T> list, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static <T> List<Pair<Query, Update>> toPairs(List<T> list, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		List<Pair<Query, Update>> pairs = new ArrayList<>(list.size());
 		List<EntityField> entityFields = ClassHelper.getEntityFields(clazz);
 
 		for (T entity : list) {
-			pairs.add(entityToQueryAndUpdate(entity, entityFields));
+			pairs.add(toPair(entity, entityFields));
 		}
 
 		return pairs;
 	}
 
 	/**
-	 * entitiesToPairs
-	 * @param list
-	 * @param fields
-	 * @param clazz
+	 * Entities to query and update pairs.
+	 * @param list: Entities.
+	 * @param fields: Fields contains in query.
+	 * @param clazz: Entity class.
 	 * @return {@literal List<Pair<Query,Update>>}
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
 	 */
-	public static <T> List<Pair<Query, Update>> entitiesToPairs(List<T> list, List<String> fields, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static <T> List<Pair<Query, Update>> toPairs(List<T> list, List<String> fields, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		List<Pair<Query, Update>> pairs = new ArrayList<>(list.size());
 		List<EntityField> entityFields = ClassHelper.getEntityFields(clazz);
 
@@ -134,9 +127,9 @@ public class BulkOperationsHelper {
 	}
 
 	/**
-	 * save
-	 * @param list
-	 * @param clazz
+	 * Save list
+	 * @param list: Entities.
+	 * @param clazz: Entity class.
 	 * @return BulkWriteResult
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
@@ -144,16 +137,16 @@ public class BulkOperationsHelper {
 	 */
 	public <T> BulkWriteResult save(List<T> list, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		BulkOperations bulkOperations = bulkOperations(BulkMode.UNORDERED, clazz);
-		List<Pair<Query, Update>> pairs = entitiesToPairs(list, clazz);
+		List<Pair<Query, Update>> pairs = toPairs(list, clazz);
 		bulkOperations.upsert(pairs);
 		return bulkOperations.execute();
 	}
 
 	/**
-	 * save
-	 * @param list
-	 * @param fields
-	 * @param clazz
+	 * Save list
+	 * @param list: Entities.
+	 * @param fields: Fields can determine an unique entity.
+	 * @param clazz: Entity class.
 	 * @return BulkWriteResult
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
@@ -161,7 +154,7 @@ public class BulkOperationsHelper {
 	 */
 	public <T> BulkWriteResult save(List<T> list, List<String> fields, Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		BulkOperations bulkOperations = bulkOperations(BulkMode.UNORDERED, clazz);
-		List<Pair<Query, Update>> pairs = entitiesToPairs(list, fields, clazz);
+		List<Pair<Query, Update>> pairs = toPairs(list, fields, clazz);
 		bulkOperations.upsert(pairs);
 		return bulkOperations.execute();
 	}
