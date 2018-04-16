@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import devutility.internal.lang.StringHelper;
-import devutility.internal.net.URLCoderHelper;
+import devutility.internal.net.UrlCoderHelper;
 
 public class CookieHelper {
 	// region set cookie
@@ -56,7 +56,7 @@ public class CookieHelper {
 			return null;
 		}
 
-		Cookie cookie = new Cookie(name, URLCoderHelper.encode(value));
+		Cookie cookie = new Cookie(name, UrlCoderHelper.encode(value));
 
 		if (!StringHelper.isNullOrEmpty(domain)) {
 			cookie.setDomain(domain);
@@ -134,7 +134,7 @@ public class CookieHelper {
 			return null;
 		}
 
-		return URLCoderHelper.decode(cookie.getValue());
+		return UrlCoderHelper.decode(cookie.getValue());
 	}
 
 	// endregion

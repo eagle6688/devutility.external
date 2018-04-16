@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>com.github.eagle6688</groupId>
 			<artifactId>devutility.internal</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.7</version>
 		</dependency>
 		<!-- devutility end -->
 
@@ -129,14 +129,6 @@
 			<version>3.4.5</version>
 		</dependency>
 		<!-- MyBatis end -->
-
-		<!-- poi -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.17</version>
-		</dependency>
-		<!-- poi end -->
 	</dependencies>
 	<build>
 		<plugins>
