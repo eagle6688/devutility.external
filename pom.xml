@@ -114,14 +114,6 @@
 		</dependency>
 		<!-- Log end -->
 
-		<!-- Redis -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		<!-- Redis end -->
-
 		<!-- MyBatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
