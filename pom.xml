@@ -94,7 +94,7 @@
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.external.redis</artifactId>
-				<version>3.0.5</version>
+				<version>3.0.6</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
