@@ -12,6 +12,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	
 	<!-- License -->
 	<licenses>
 		<license>
@@ -94,7 +95,7 @@
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.external.redis</artifactId>
-				<version>3.0.6</version>
+				<version>3.0.7</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
