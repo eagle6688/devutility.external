@@ -12,7 +12,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
-	
+
 	<!-- License -->
 	<licenses>
 		<license>
@@ -70,7 +70,7 @@
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.external.commons-net</artifactId>
-				<version>1.0.4</version>
+				<version>1.0.5</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
