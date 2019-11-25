@@ -55,6 +55,7 @@
 	</distributionManagement>
 	<!-- distributionManagement end -->
 
+	<!-- dependencyManagement -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -104,7 +105,9 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<!-- dependencyManagement end -->
 
+	<!-- dependencies -->
 	<dependencies>
 		<dependency>
 			<groupId>com.github.eagle6688</groupId>
@@ -112,7 +115,9 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<!-- dependencies end -->
 
+	<!-- build -->
 	<build>
 		<plugins>
 			<plugin>
@@ -176,4 +181,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- build end -->
 </project>
