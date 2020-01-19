@@ -58,6 +58,7 @@
 	<!-- dependencyManagement -->
 	<dependencyManagement>
 		<dependencies>
+			<!-- Internal -->
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.internal</artifactId>
@@ -96,13 +97,22 @@
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.external.redis</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.external.servlet</artifactId>
 				<version>4.1.2</version>
 			</dependency>
+			<!-- Internal end -->
+
+			<!-- External -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-email</artifactId>
+				<version>1.5</version>
+			</dependency>
+			<!-- External end -->
 		</dependencies>
 	</dependencyManagement>
 	<!-- dependencyManagement end -->
