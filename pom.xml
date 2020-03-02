@@ -4,15 +4,17 @@
 	<artifactId>devutility.external</artifactId>
 	<version>1.2.0</version>
 	<packaging>pom</packaging>
-	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/eagle6688/devutility.external</url>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Parent pom for DevUtility.</description>
 
+	<!-- properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	<!-- properties end -->
 
 	<!-- License -->
 	<licenses>
