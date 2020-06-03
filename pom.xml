@@ -119,7 +119,6 @@
 				<groupId>com.github.eagle6688</groupId>
 				<artifactId>devutility.test</artifactId>
 				<version>1.0.0</version>
-				<scope>test</scope>
 			</dependency>
 			<!-- Internal end -->
 
