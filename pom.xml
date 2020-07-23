@@ -17,6 +17,7 @@
 		<commons-email-version>1.5</commons-email-version>
 		<commons-net-version>3.6</commons-net-version>
 		<validation-api-version>2.0.1.Final</validation-api-version>
+		<hibernate-validator-version>6.1.5.Final</hibernate-validator-version>
 		<jackson-datatype-jsr310-version>2.10.2</jackson-datatype-jsr310-version>
 		<poi-version>4.1.2</poi-version>
 		<jedis-version>3.2.0</jedis-version>
@@ -142,6 +143,11 @@
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
 				<version>${validation-api-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.validator</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.datatype</groupId>
