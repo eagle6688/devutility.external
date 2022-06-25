@@ -21,7 +21,7 @@
 		<jackson-datatype-jsr310-version>2.10.2</jackson-datatype-jsr310-version>
 		<poi-version>4.1.2</poi-version>
 		<jedis-version>3.2.0</jedis-version>
-		<spring-data-mongodb-version>2.2.5.RELEASE</spring-data-mongodb-version>
+		<spring-data-mongodb-version>3.3.5</spring-data-mongodb-version>
 	</properties>
 	<!-- properties end -->
 
