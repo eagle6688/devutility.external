@@ -17,7 +17,7 @@
 		<commons-email-version>1.5</commons-email-version>
 		<commons-net-version>3.9.0</commons-net-version>
 		<validation-api-version>2.0.1.Final</validation-api-version>
-		<hibernate-validator-version>6.1.5.Final</hibernate-validator-version>
+		<hibernate-validator-version>6.2.0.Final</hibernate-validator-version>
 		<jackson-datatype-jsr310-version>2.10.2</jackson-datatype-jsr310-version>
 		<poi-version>4.1.2</poi-version>
 		<jedis-version>3.2.0</jedis-version>
